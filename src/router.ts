@@ -6,6 +6,7 @@ import JavaDocGen from '@/tools/gamemaker/javadoc-gen/JavaDocGen.vue';
 import ColorPicker from '@/tools/gamemaker/color-picker/ColorPicker.vue';
 import LinearEquationSolver from '@/tools/math/linear-equation-solver/LinearEquationSolver.vue';
 import Ratiomatic from '@/tools/math/ratiomatic/Ratiomatic.vue';
+import SmoothApproach from '@/tools/math/smooth-approach/SmoothApproach.vue';
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,11 @@ const routes: Array<RouteConfig> = [
     path: '/ratiomatic',
     name: 'ratiomatic',
     component: Ratiomatic
+  },
+  {
+    path: '/smooth-approach',
+    name: 'smooth-approach',
+    component: SmoothApproach
   },
 
   {

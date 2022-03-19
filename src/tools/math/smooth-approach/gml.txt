@@ -1,0 +1,6 @@
+function smooth_approach(current_value, target_value, spd, threshold = 0.0005) {
+    var difference = target_value - current_value;
+    if (abs(difference) < threshold) return target_value;
+    return current_value + sign(difference) * abs(difference) * spd;
+}
+

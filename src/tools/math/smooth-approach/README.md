@@ -1,0 +1,3 @@
+# [Smooth Approach](https://chrisanselmo.com/tools/#/smooth-approach)
+
+This tool is also a reference for the "smooth approach" script that I use in a ton of projects. The script acts as a general purpose easing function, but it isn't based on time. As a result, getting the right values often requires a bit of fiddling. This tool includes a reference to the function, and also an interactable utility that lets you test how the function behaves given certain parameters.

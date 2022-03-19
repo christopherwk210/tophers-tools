@@ -15,3 +15,4 @@ An organized collection of various useful online tools, made with Vue.
 
 - [Ratiomatic](./src/tools/math/ratiomatic) - Automatically calculate ratios. Handy for working with resolutions.
 - [Linear Equation Solver](./src/tools/math/linear-equation-solver) - Two points go in, slope and y-intercept come out.
+- [Smooth Approach](./src/tools/math/smooth-approach) - Handy reference utility for a handy easing script.

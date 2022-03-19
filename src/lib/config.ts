@@ -34,6 +34,12 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Two points go in, slope and y-intercept come out.',
       route: '/linear-equations',
       about: githubURL + 'math/linear-equation-solver'
+    },
+    {
+      title: 'Smooth Approach',
+      description: 'Handy reference utility for a handy easing script.',
+      route: '/smooth-approach',
+      about: githubURL + 'math/smooth-approach'
     }
   ]
 }

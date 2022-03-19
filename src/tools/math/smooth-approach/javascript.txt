@@ -1,0 +1,6 @@
+function smoothApproach(currentValue, targetValue, speed, threshold) {
+  threshold = threshold === undefined ? 0.0005 : threshold;
+  const difference = targetValue - currentValue;
+  if (Math.abs(difference) < threshold) return targetValue;
+  return currentValue + Math.sign(difference) * Math.abs(difference) * speed;
+}
