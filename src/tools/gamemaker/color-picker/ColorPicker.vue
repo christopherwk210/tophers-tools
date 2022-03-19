@@ -82,6 +82,7 @@ import { Component, Ref } from 'vue-property-decorator';
 import ToolSuper from '@/tools/ToolSuper';
 import ToolWindow from '@/components/ToolWindow.vue';
 import iro from '@jaames/iro';
+import { IroColorPicker } from '@jaames/iro/dist/ColorPicker';
 
 import {
   hexToRgb,
@@ -121,11 +122,15 @@ export default class ColorPicker extends ToolSuper {
 
   hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
+  iroColorPicker!: IroColorPicker;
+
   mounted() {
-    iro.ColorPicker(this.picker, {
+    this.iroColorPicker = iro.ColorPicker(this.picker, {
       color: this.currentColor,
       width: 230
-    }).on('input:change', (e: any) => {
+    });
+    
+    this.iroColorPicker.on('input:change', (e: any) => {
       this.handleColorInputChange(e.hexString);
     });
   }
@@ -252,6 +257,8 @@ export default class ColorPicker extends ToolSuper {
 
     this.gmlHSV = `${this.gmlHSVbase}(${this.h}, ${this.s}, ${this.v})`;
     this.gmlRGB = `${this.gmlRGBbase}(${this.r}, ${this.g}, ${this.b})`;
+
+    this.iroColorPicker.color.set(this.hex);
   }
 }
 </script>
