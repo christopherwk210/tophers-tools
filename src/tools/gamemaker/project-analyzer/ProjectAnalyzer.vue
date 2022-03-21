@@ -19,12 +19,20 @@
       <h4 class="mt-4">Stats</h4>
       <ul class="text-muted">
         <li>Total assets: <span class="text-primary">{{totalAssets}}</span></li>
-        <li>Total lines of GML code: <span class="text-primary">{{totalLinesOfCode}}</span></li>
+        <li>Total lines of GML code: <span class="text-primary">{{totalLinesOfGMLCode}}</span></li>
+        <li>Total lines of shader code: <span class="text-primary">{{totalLinesOfShaderCode}}</span></li>
         <hr>
         <li v-for="(type, typeIndex) of Object.keys(assetCounts)" :key="typeIndex">{{assetCounts[type].type}}: <span class="text-primary">{{assetCounts[type].count}}</span></li>
       </ul>
 
-      <h4 class="mt-4">Asset Distribution</h4>
+      <h4 class="mt-4 d-flex">
+        Asset Distribution
+
+        <div class="form-check form-switch d-inline-block ms-auto fs-6">
+          <input v-model="chartModeIsBar" class="form-check-input" type="checkbox" role="switch" id="chart-type">
+          <label style="transform: translateY(2px)" class="form-check-label" for="chart-type">{{chartModeIsBar ? 'Bar chart' : 'Pie chart'}}</label>
+        </div>
+      </h4>
       <div class="canvas-container">
         <canvas ref="chartCanvas"></canvas>
       </div>
@@ -35,13 +43,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from 'vue-property-decorator';
+import { Component, Ref, Watch } from 'vue-property-decorator';
 
 import ToolSuper from '@/tools/ToolSuper';
 import ToolWindow from '@/components/ToolWindow.vue';
 import DropZone from './DropZone.vue';
 
 import { scanDirectory, fileEntryToFile, getFileTypeLines } from './filesystem-utils';
+import { getPieConfig, getBarConfig } from './chart-config';
 
 import json5 from 'json5';
 import IChart from 'chart.js/auto';
@@ -63,6 +72,8 @@ export default class ProjectAnalyzer extends ToolSuper {
   @Ref() chartCanvas!: HTMLCanvasElement;
 
   state: State = State.WAITING_FOR_PROJECT;
+  chartModeIsBar = true;
+  chart!: IChart<any, number[], string>;
 
   // Map of project folder names to proper asset type strings
   folderToAssetType = {
@@ -85,7 +96,8 @@ export default class ProjectAnalyzer extends ToolSuper {
   // Stat vars
   projectTitle = '';
   projectFile = '';
-  totalLinesOfCode = 0;
+  totalLinesOfGMLCode = 0;
+  totalLinesOfShaderCode = 0;
   totalAssets = 0;
 
   // Stores total asset counts from scan
@@ -136,11 +148,16 @@ export default class ProjectAnalyzer extends ToolSuper {
 
   async countCodeLines(map: any) {
     if (map[this.projectTitle].scripts) {
-      this.totalLinesOfCode += await getFileTypeLines(map[this.projectTitle].scripts, '.gml');
+      this.totalLinesOfGMLCode += await getFileTypeLines(map[this.projectTitle].scripts, '.gml');
     }
     
     if (map[this.projectTitle].objects) {
-      this.totalLinesOfCode += await getFileTypeLines(map[this.projectTitle].objects, '.gml');
+      this.totalLinesOfGMLCode += await getFileTypeLines(map[this.projectTitle].objects, '.gml');
+    }
+
+    if (map[this.projectTitle].shaders) {
+      this.totalLinesOfShaderCode += await getFileTypeLines(map[this.projectTitle].shaders, '.fsh');
+      this.totalLinesOfShaderCode += await getFileTypeLines(map[this.projectTitle].shaders, '.vsh');
     }
   }
 
@@ -159,7 +176,7 @@ export default class ProjectAnalyzer extends ToolSuper {
     // Loop through all the resources to cound the assets
     for (const resource of json.resources)  {
       const assetType: any = resource.id.path.split('/')[0];
-      
+
       if (this.assetCounts[assetType]) {
         this.assetCounts[assetType].count++;
       } else {
@@ -171,7 +188,14 @@ export default class ProjectAnalyzer extends ToolSuper {
     }
   }
 
-  setupChart() {
+  @Watch('chartModeIsBar')
+  handleChartTypeChange() {
+    this.setupChart(this.chart);
+  }
+
+  setupChart(existingChart?: IChart<any, number[], string>) {
+    if (existingChart) existingChart.destroy();
+
     const labels = [];
     const dataCounts = [];
     for (const assetCount of Object.values(this.assetCounts)) {
@@ -179,39 +203,8 @@ export default class ProjectAnalyzer extends ToolSuper {
       dataCounts.push(assetCount.count);
     }
 
-    new Chart(this.chartCanvas, {
-      type: 'pie',
-      options: {
-        responsive: true,
-        maintainAspectRatio: false
-      },
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Asset Counts',
-            data: dataCounts,
-            backgroundColor: [
-              '#BE4A2F',
-              '#E4A672',
-              '#A22633',
-              '#FEAE34',
-              '#63C74D',
-              '#265C42',
-              '#124E89',
-              '#C0CBDC',
-              '#5A6988',
-              '#FF0044',
-              '#68386C',
-              '#B55088',
-              '#F6757A',
-              '#E8B796'
-            ],
-            borderWidth: 0
-          }
-        ]
-      }
-    });
+    const config = this.chartModeIsBar ? getBarConfig(labels, dataCounts) : getPieConfig(labels, dataCounts);
+    this.chart = new Chart(this.chartCanvas, config);
   }
 }
 </script>
