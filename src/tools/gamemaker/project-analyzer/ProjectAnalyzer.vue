@@ -37,7 +37,10 @@
         <canvas ref="chartCanvas"></canvas>
       </div>
       
-      <button @click="reset" class="btn btn-primary d-block mx-auto mt-5">Reset</button>
+      <div id="analyzer-buttons" class="d-flex justify-content-center mt-5">
+        <button @click="reset" class="btn btn-primary mx-3">Reset</button>
+        <button @click="generateReport" class="btn btn-primary mx-3">Generate Report</button>
+      </div>
     </div>
   </ToolWindow>
 </template>
@@ -51,6 +54,8 @@ import DropZone from './DropZone.vue';
 
 import { scanDirectory, fileEntryToFile, getFileTypeLines } from './filesystem-utils';
 import { getPieConfig, getBarConfig } from './chart-config';
+
+const html2canvas = require('@/assets/scripts/html2canvas.esm').default;
 
 import json5 from 'json5';
 import IChart from 'chart.js/auto';
@@ -104,7 +109,40 @@ export default class ProjectAnalyzer extends ToolSuper {
   assetCounts: { [x: string]: { type: string, count: number; } } = {};
 
   reset() {
+    this.totalAssets = 0;
+    this.totalLinesOfGMLCode = 0;
+    this.totalLinesOfShaderCode = 0;
     this.state = State.WAITING_FOR_PROJECT;
+  }
+
+  async generateReport() {
+    const toolWindowLinks: HTMLDivElement = document.querySelector('.card-header > .ms-auto')!;
+    toolWindowLinks.style.display = 'none';
+
+    const chartSwitch: HTMLDivElement = document.querySelector('.form-switch')!;
+    chartSwitch.style.opacity = '0';
+
+    const analyzerButtons: HTMLDivElement = document.querySelector('#analyzer-buttons')!;
+    analyzerButtons.style.opacity = '0';
+
+    const replacementHeaderMatter = document.createElement('div');
+    replacementHeaderMatter.className = 'ms-auto text-white';
+    replacementHeaderMatter.innerHTML = 'https://chrisanselmo.com/tools/#/project-analyzer';
+    replacementHeaderMatter.style.opacity = '0.4';
+    document.querySelector('.card-header')!.appendChild(replacementHeaderMatter);
+
+    const cardElement = document.querySelector('.card');
+    const canvas: HTMLCanvasElement = await html2canvas(cardElement, { backgroundColor: '#2F2E34' });
+    const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    const link = document.createElement('a');
+    link.download = `${this.projectTitle}.png`;
+    link.href = image;
+    link.click();
+
+    replacementHeaderMatter.remove();
+    toolWindowLinks.style.display = 'block';
+    chartSwitch.style.opacity = '1';
+    analyzerButtons.style.opacity = '1';
   }
 
   async handleDrop(item: DataTransferItem) {

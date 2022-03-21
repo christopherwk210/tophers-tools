@@ -47,10 +47,10 @@ export async function getFileTypeLines(container: any, extension: string) {
       if (key.includes(extension)) {
         const fileEntry = (scriptFolder as any)[key] as FileSystemFileEntry;
         const file = await fileEntryToFile(fileEntry);
-        const gmlText = await file.text();
+        const fileText = await file.text();
 
         // Regex to split by newlines
-        totalLines += gmlText.split(/\r\n|\r|\n/).length;
+        totalLines += fileText.split(/\r\n|\r|\n/).length;
       }
 
     }
