@@ -7,22 +7,7 @@
 
 <template>
   <ToolWindow :title="title" :aboutLink="about" backRoute="/">
-    <div class="p-4" v-if="state === 0">
-      <p class="text-muted user-select-none">Note: This is an experimental tool that may not work on all browsers.</p>
-
-      <div
-        class="card text-white"
-        :class="dropZoneClasses"
-        @dragenter="handleDragEnter"
-        @dragleave="handleDragLeave"
-        @dragover="handleDragOver"
-        @drop="handleDrop"
-      >
-        <div class="card-body text-center p-5 user-select-none" style="pointer-events: none">
-          Drop a folder containing a .yyp file here!
-        </div>
-      </div>
-    </div>
+    <DropZone v-if="state === 0" @drop="handleDrop" />
 
     <div class="p-4 text-muted text-center user-select-none" style="cursor: progress" v-if="state === 1">
       Scanning project, please wait...
@@ -34,7 +19,9 @@
       <h4 class="mt-4">Stats</h4>
       <ul class="text-muted">
         <li>Total assets: <span class="text-primary">{{totalAssets}}</span></li>
-        <li>Total lines of code: <span class="text-primary">{{totalLinesOfCode}}</span></li>
+        <li>Total lines of GML code: <span class="text-primary">{{totalLinesOfCode}}</span></li>
+        <hr>
+        <li v-for="(type, typeIndex) of Object.keys(assetCounts)" :key="typeIndex">{{assetCounts[type].type}}: <span class="text-primary">{{assetCounts[type].count}}</span></li>
       </ul>
 
       <h4 class="mt-4">Asset Distribution</h4>
@@ -49,10 +36,14 @@
 
 <script lang="ts">
 import { Component, Ref } from 'vue-property-decorator';
+
 import ToolSuper from '@/tools/ToolSuper';
 import ToolWindow from '@/components/ToolWindow.vue';
-import json5 from 'json5';
+import DropZone from './DropZone.vue';
 
+import { scanDirectory, fileEntryToFile, getFileTypeLines } from './filesystem-utils';
+
+import json5 from 'json5';
 import IChart from 'chart.js/auto';
 const Chart: typeof IChart = require('chart.js/auto').default;
 
@@ -64,20 +55,16 @@ enum State {
 
 @Component({
   components: {
-    ToolWindow
+    ToolWindow,
+    DropZone
   }
 })
 export default class ProjectAnalyzer extends ToolSuper {
   @Ref() chartCanvas!: HTMLCanvasElement;
 
-  dragInside = false;
   state: State = State.WAITING_FOR_PROJECT;
 
-  projectTitle = '';
-  projectFile = '';
-  totalLinesOfCode = 0;
-  totalAssets = 0;
-
+  // Map of project folder names to proper asset type strings
   folderToAssetType = {
     extensions: 'Extensions',
     tilesets: 'Tile Sets',
@@ -95,102 +82,84 @@ export default class ProjectAnalyzer extends ToolSuper {
     sprites: 'Sprites'
   };
 
+  // Stat vars
+  projectTitle = '';
+  projectFile = '';
+  totalLinesOfCode = 0;
+  totalAssets = 0;
+
+  // Stores total asset counts from scan
   assetCounts: { [x: string]: { type: string, count: number; } } = {};
 
   reset() {
     this.state = State.WAITING_FOR_PROJECT;
   }
 
-  handleDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-  
-  handleDragEnter(event: DragEvent) {
-    event.preventDefault();
-    this.dragInside = true;
-  }
+  async handleDrop(item: DataTransferItem) {
+    // Get access to the local filesystem
+    const fileSystemEntry = item.webkitGetAsEntry();
+    if (!fileSystemEntry) return;
+    
+    // Set scanning state and read directory
+    this.state = State.SCANNING;
+    const result = await scanDirectory(fileSystemEntry);
 
-  handleDragLeave(event: DragEvent) {
-    event.preventDefault();
-    this.dragInside = false;
-  }
+    // If the item dropped wasn't a single folder then reset
+    if (Object.keys(result).length !== 1) return this.state = State.WAITING_FOR_PROJECT;
 
-  async handleDrop(event: DragEvent) {
-    event.preventDefault();
-    this.dragInside = false;
+    // The first item will be the containing folder, which is used as the project title
+    this.projectTitle = Object.keys(result)[0];
 
-    if (event.dataTransfer) {
-      if (event.dataTransfer.items.length > 0) {
-        const item = event.dataTransfer.items[0];
-        const fileSystemEntry = item.webkitGetAsEntry();
-        if (fileSystemEntry) {
-          this.state = State.SCANNING;
-          const result = await this.scanProjectDirectory(fileSystemEntry);
+    // Search for a .yyp file, aka make sure this is a GMS2 project
+    const yypFile = Object.keys(result[this.projectTitle]).find(key => key.includes('.yyp'));
+    if (!yypFile) return this.state = State.WAITING_FOR_PROJECT;
 
-          let found = false;
-          if (Object.keys(result).length === 1) {
-            this.projectTitle = Object.keys(result)[0];
-            for (const key of Object.keys(result[this.projectTitle])) {
-              if (key.includes('.yyp')) {
-                found = true;
-                this.projectFile = key;
-              }
-            }
-          }
-
-          if (found) this.handleDirectoryMap(result);
-        }
-      }
-    }
+    // Save the project file name and continue to actually parsing the project for stats
+    this.projectFile = yypFile;
+    this.parseProject(result);
   }
 
-  async handleDirectoryMap(map: any) {
+  async parseProject(map: any) {
+    // Get code line totals
     await this.countCodeLines(map);
 
-    const projectFile = map[this.projectTitle][this.projectFile] as FileSystemFileEntry;
-    const file = await this.fileEntryToFile(projectFile);
-    const fileText = await file.text();
+    // Get asset totals
+    await this.handleYYP(map);
 
-    const parsedProject = json5.parse(fileText);
-    this.handleYYP(parsedProject);
-
+    // Show the stats view
     this.state = State.SCAN_COMPLETE;
+
+    // Wait a tick before showing chart (so that the canvas is on the DOM)
     await this.$nextTick();
     this.setupChart();
   }
 
   async countCodeLines(map: any) {
     if (map[this.projectTitle].scripts) {
-      this.totalLinesOfCode += await this.getGmlFileLines(map[this.projectTitle].scripts);
+      this.totalLinesOfCode += await getFileTypeLines(map[this.projectTitle].scripts, '.gml');
     }
     
     if (map[this.projectTitle].objects) {
-      this.totalLinesOfCode += await this.getGmlFileLines(map[this.projectTitle].objects);
+      this.totalLinesOfCode += await getFileTypeLines(map[this.projectTitle].objects, '.gml');
     }
   }
 
-  async getGmlFileLines(container: any) {
-    let totalLines = 0;
-    for (const scriptFolder of Object.values(container)) {
-      for (const key of Object.keys(scriptFolder as any)) {
-        if (key.includes('.gml')) {
-          const fileEntry = (scriptFolder as any)[key] as FileSystemFileEntry;
-          const file = await this.fileEntryToFile(fileEntry);
-          const gmlText = await file.text();
-          totalLines += gmlText.split(/\r\n|\r|\n/).length;
-        }
-      }
-    }
-    return totalLines;
-  }
+  async handleYYP(map: any) {
+    // Read the .yyp file
+    const projectFile = map[this.projectTitle][this.projectFile] as FileSystemFileEntry;
+    const file = await fileEntryToFile(projectFile);
+    const fileText = await file.text();
 
-  async handleYYP(json: any) {
+    // Parse the json with json5 which is forgiving of the invalid syntax that yyp files have
+    const json = json5.parse(fileText);
     if (!json.resources) return this.state = State.WAITING_FOR_PROJECT;
 
     this.totalAssets = json.resources.length;
 
+    // Loop through all the resources to cound the assets
     for (const resource of json.resources)  {
       const assetType: any = resource.id.path.split('/')[0];
+      
       if (this.assetCounts[assetType]) {
         this.assetCounts[assetType].count++;
       } else {
@@ -238,52 +207,11 @@ export default class ProjectAnalyzer extends ToolSuper {
               '#F6757A',
               '#E8B796'
             ],
-            hoverOffset: 4,
             borderWidth: 0
           }
         ]
       }
     });
-  }
-
-  async scanProjectDirectory(entry: FileSystemEntry, data: any = {}) {
-    if (entry && entry.isDirectory) {
-      const directory = entry as FileSystemDirectoryEntry;
-      const directoryReader = directory.createReader();
-
-      data[directory.name] = {};
-      const entries = await this.readDirectoryEntriesAsync(directoryReader);
-      for (const entry of entries) {
-        await this.scanProjectDirectory(entry, data[directory.name]);
-      }
-    } else {
-      data[entry.name] = entry;
-    }
-
-    return data;
-  }
-
-  readDirectoryEntriesAsync(directoryReader: FileSystemDirectoryReader): Promise<FileSystemEntry[]> {
-    return new Promise(resolve => {
-      directoryReader.readEntries(entries => {
-        resolve(entries);
-      });
-    });
-  }
-
-  fileEntryToFile(file: FileSystemFileEntry): Promise<File> {
-    return new Promise(resolve => {
-      file.file(f => {
-        resolve(f);
-      })
-    });
-  }
-
-  get dropZoneClasses() {
-    return {
-      'bg-dark': !this.dragInside,
-      'bg-primary': this.dragInside
-    };
   }
 }
 </script>
