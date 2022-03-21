@@ -10,6 +10,12 @@ const githubURL = 'https://github.com/christopherwk210/tophers-tools/tree/master
 export const tools: { [category: string]: ToolConfig[] } = {
   GameMaker: [
     {
+      title: 'GMS2 Project Analyzer',
+      description: 'Generate fun statistics about your GMS2 project - no download or upload required!',
+      route: '/project-analyzer',
+      about: githubURL + 'gamemaker/project-analyzer'
+    },
+    {
       title: 'GM Color Picker',
       description: 'The easy way to get GML color codes.',
       route: '/color-picker',

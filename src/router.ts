@@ -2,8 +2,11 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 
 import ToolList from '@/views/ToolList.vue';
+
+import ProjectAnalyzer from '@/tools/gamemaker/project-analyzer/ProjectAnalyzer.vue';
 import JavaDocGen from '@/tools/gamemaker/javadoc-gen/JavaDocGen.vue';
 import ColorPicker from '@/tools/gamemaker/color-picker/ColorPicker.vue';
+
 import LinearEquationSolver from '@/tools/math/linear-equation-solver/LinearEquationSolver.vue';
 import Ratiomatic from '@/tools/math/ratiomatic/Ratiomatic.vue';
 import SmoothApproach from '@/tools/math/smooth-approach/SmoothApproach.vue';
@@ -17,6 +20,11 @@ const routes: Array<RouteConfig> = [
     component: ToolList
   },
 
+  {
+    path: '/project-analyzer',
+    name: 'project-analyzer',
+    component: ProjectAnalyzer
+  },
   {
     path: '/gml-javadoc-gen',
     name: 'gml-javadoc-gen',

@@ -24,5 +24,11 @@ import NavBar from '@/components/NavBar.vue';
     NavBar
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  mounted() {
+    // Prevent global file drops
+    window.addEventListener('dragover', e => e.preventDefault(), false);
+    window.addEventListener('drop', e => e.preventDefault(), false);
+  }
+}
 </script>

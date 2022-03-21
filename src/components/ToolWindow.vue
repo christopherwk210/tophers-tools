@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-card-container">
+  <div class="tool-card-container" ondrop="event.preventDefault()">
     <div class="card bg-secondary">
       <div class="card-header bg-primary no-text d-flex">
         {{title}}
