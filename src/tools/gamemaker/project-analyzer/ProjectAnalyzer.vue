@@ -161,22 +161,27 @@ export default class ProjectAnalyzer extends ToolSuper {
 
   async countCodeLines(map: any) {
     if (map[this.projectTitle].scripts) {
-      for (const scriptFolder of Object.values(map[this.projectTitle].scripts)) {
-        let foundKey = '';
-        for (const key of Object.keys(scriptFolder as any)) {
-          if (key.includes('.gml')) {
-            foundKey = key;
-          }
-        }
+      this.totalLinesOfCode += await this.getGmlFileLines(map[this.projectTitle].scripts);
+    }
+    
+    if (map[this.projectTitle].objects) {
+      this.totalLinesOfCode += await this.getGmlFileLines(map[this.projectTitle].objects);
+    }
+  }
 
-        if (foundKey && (scriptFolder as any)[foundKey]) {
-          const fileEntry = (scriptFolder as any)[foundKey] as FileSystemFileEntry;
+  async getGmlFileLines(container: any) {
+    let totalLines = 0;
+    for (const scriptFolder of Object.values(container)) {
+      for (const key of Object.keys(scriptFolder as any)) {
+        if (key.includes('.gml')) {
+          const fileEntry = (scriptFolder as any)[key] as FileSystemFileEntry;
           const file = await this.fileEntryToFile(fileEntry);
           const gmlText = await file.text();
-          this.totalLinesOfCode += gmlText.split(/\r\n|\r|\n/).length;
+          totalLines += gmlText.split(/\r\n|\r|\n/).length;
         }
       }
     }
+    return totalLines;
   }
 
   async handleYYP(json: any) {
