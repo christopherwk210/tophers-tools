@@ -185,6 +185,7 @@ export default class ProjectAnalyzer extends ToolSuper {
   }
 
   async countCodeLines(map: any) {
+    // GML
     if (map[this.projectTitle].scripts) {
       this.totalLinesOfGMLCode += await getFileTypeLines(map[this.projectTitle].scripts, '.gml');
     }
@@ -193,6 +194,11 @@ export default class ProjectAnalyzer extends ToolSuper {
       this.totalLinesOfGMLCode += await getFileTypeLines(map[this.projectTitle].objects, '.gml');
     }
 
+    if (map[this.projectTitle].rooms) {
+      this.totalLinesOfGMLCode += await getFileTypeLines(map[this.projectTitle].rooms, '.gml');
+    }
+
+    // Shaders
     if (map[this.projectTitle].shaders) {
       this.totalLinesOfShaderCode += await getFileTypeLines(map[this.projectTitle].shaders, '.fsh');
       this.totalLinesOfShaderCode += await getFileTypeLines(map[this.projectTitle].shaders, '.vsh');
