@@ -1,16 +1,27 @@
-export function readDirectoryEntriesAsync(directoryReader: FileSystemDirectoryReader): Promise<FileSystemEntry[]> {
-  return new Promise(resolve => {
-    directoryReader.readEntries(entries => {
-      resolve(entries);
-    });
-  });
+export async function readDirectoryEntriesAsync(directoryReader: FileSystemDirectoryReader): Promise<FileSystemEntry[]> {
+  let finalOutput: any = [];
+
+  function readEntries(): Promise<number> {
+    return new Promise(resolve => {
+      directoryReader.readEntries(entries => {
+        finalOutput.push(...entries);
+        resolve(entries.length);
+      });
+    })
+  }
+
+  let lastEnt = await readEntries();
+
+  while (lastEnt > 0) {
+    lastEnt = await readEntries();
+  }
+  
+  return finalOutput;
 }
 
 export function fileEntryToFile(file: FileSystemFileEntry): Promise<File> {
   return new Promise(resolve => {
-    file.file(f => {
-      resolve(f);
-    })
+    file.file(f => resolve(f))
   });
 }
 
