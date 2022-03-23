@@ -10,6 +10,12 @@ const githubURL = 'https://github.com/christopherwk210/tophers-tools/tree/master
 export const tools: { [category: string]: ToolConfig[] } = {
   Animation: [
     {
+      title: 'Lottie Looper',
+      description: 'Tool for determining frame perfect positions for custom lottie loops.',
+      route: '/lottie-looper',
+      about: githubURL + 'animation/lottie-looper'
+    },
+    {
       title: 'Smooth Approach',
       description: 'Handy reference utility for a handy easing script.',
       route: '/smooth-approach',

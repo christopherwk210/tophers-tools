@@ -7,7 +7,10 @@
 
 <template>
   <ToolWindow :title="title" :aboutLink="about" backRoute="/">
-    <DropZone v-if="state === 0" @drop="handleDrop" />
+    <div class="p-4" v-if="state === 0">
+      <p class="text-muted user-select-none">Note: This is an experimental tool that may not work on all browsers.</p>
+      <DropZone @drop="handleDrop" text="Drop a folder containing a .yyp file here!" />
+    </div>
 
     <div class="p-4 text-muted text-center user-select-none" style="cursor: progress" v-if="state === 1">
       Scanning project, please wait...
@@ -50,7 +53,7 @@ import { Component, Ref, Watch } from 'vue-property-decorator';
 
 import ToolSuper from '@/tools/ToolSuper';
 import ToolWindow from '@/components/ToolWindow.vue';
-import DropZone from './DropZone.vue';
+import DropZone from '../../../components/DropZone.vue';
 
 import { scanDirectory, fileEntryToFile, getFileTypeLines } from './filesystem-utils';
 import { getPieConfig, getBarConfig } from './chart-config';
