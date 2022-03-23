@@ -30,14 +30,14 @@ export const tools: { [category: string]: ToolConfig[] } = {
       about: githubURL + 'gamemaker/project-analyzer'
     },
     {
-      title: 'GM Color Picker',
+      title: 'Color Picker',
       description: 'The easy way to get GML color codes.',
       route: '/color-picker',
       about: githubURL + 'gamemaker/color-picker'
     },
     {
-      title: 'GML JavaDoc Gen',
-      description: 'Quickly turn GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.',
+      title: 'JavaDoc Gen',
+      description: 'Turns GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.',
       route: '/gml-javadoc-gen',
       about: githubURL + 'gamemaker/javadoc-gen'
     }
