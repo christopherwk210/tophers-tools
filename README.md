@@ -8,6 +8,7 @@ An organized collection of various useful online tools, made with Vue.
 
 ### Animation
 
+- [Lottie Looper](./src/tools/animation/lottie-looper) - Tool for determining frame perfect positions for custom lottie loops.
 - [Smooth Approach](./src/tools/animation/smooth-approach) - Handy reference utility for a handy easing script.
 
 ### GameMaker
