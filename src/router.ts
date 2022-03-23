@@ -9,7 +9,7 @@ import ColorPicker from '@/tools/gamemaker/color-picker/ColorPicker.vue';
 
 import LinearEquationSolver from '@/tools/math/linear-equation-solver/LinearEquationSolver.vue';
 import Ratiomatic from '@/tools/math/ratiomatic/Ratiomatic.vue';
-import SmoothApproach from '@/tools/math/smooth-approach/SmoothApproach.vue';
+import SmoothApproach from '@/tools/animation/smooth-approach/SmoothApproach.vue';
 
 Vue.use(VueRouter)
 
@@ -20,6 +20,14 @@ const routes: Array<RouteConfig> = [
     component: ToolList
   },
 
+  // Animation
+  {
+    path: '/smooth-approach',
+    name: 'smooth-approach',
+    component: SmoothApproach
+  },
+
+  // GameMaker
   {
     path: '/project-analyzer',
     name: 'project-analyzer',
@@ -36,6 +44,7 @@ const routes: Array<RouteConfig> = [
     component: ColorPicker
   },
 
+  // Math
   {
     path: '/linear-equations',
     name: 'linear-equations',
@@ -45,11 +54,6 @@ const routes: Array<RouteConfig> = [
     path: '/ratiomatic',
     name: 'ratiomatic',
     component: Ratiomatic
-  },
-  {
-    path: '/smooth-approach',
-    name: 'smooth-approach',
-    component: SmoothApproach
   },
 
   {

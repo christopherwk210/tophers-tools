@@ -8,6 +8,14 @@ export interface ToolConfig {
 const githubURL = 'https://github.com/christopherwk210/tophers-tools/tree/master/src/tools/';
 
 export const tools: { [category: string]: ToolConfig[] } = {
+  Animation: [
+    {
+      title: 'Smooth Approach',
+      description: 'Handy reference utility for a handy easing script.',
+      route: '/smooth-approach',
+      about: githubURL + 'animation/smooth-approach'
+    }
+  ],
   GameMaker: [
     {
       title: 'GMS2 Project Analyzer',
@@ -40,12 +48,6 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Two points go in, slope and y-intercept come out.',
       route: '/linear-equations',
       about: githubURL + 'math/linear-equation-solver'
-    },
-    {
-      title: 'Smooth Approach',
-      description: 'Handy reference utility for a handy easing script.',
-      route: '/smooth-approach',
-      about: githubURL + 'math/smooth-approach'
     }
   ]
 }
