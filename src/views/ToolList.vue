@@ -26,9 +26,10 @@ export default class ToolList extends Vue {
   organizedTools: (string | ToolConfig)[] = [];
 
   mounted() {
-    for (const key of Object.keys(tools)) {
+    for (const key of Object.keys(tools).sort()) {
       this.organizedTools.push(key);
-      for (const tool of tools[key]) {
+
+      for (const tool of tools[key].sort((a, b) => (a.title > b.title) ? 1 : -1)) {
         this.organizedTools.push(tool);
       }
     }
