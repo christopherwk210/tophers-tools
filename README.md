@@ -8,6 +8,7 @@ An organized collection of various useful online tools, made with Vue.
 
 ### GameMaker
 
+- [GM2 Project Analyzer](./src/tools/game-maker/project-analyzer) - Generate fun statistics about your GMS2 project - no download or upload required!
 - [GM Color Picker](./src/tools/game-maker/color-picker) - The easy way to get GML color codes.
 - [GML JavaDoc Gen](./src/tools/game-maker/javadoc-gen) - Quickly turn GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.
 
