@@ -10,6 +10,7 @@ import ProjectAnalyzer from '@/tools/gamemaker/project-analyzer/ProjectAnalyzer.
 import JavaDocGen from '@/tools/gamemaker/javadoc-gen/JavaDocGen.vue';
 import ColorPicker from '@/tools/gamemaker/color-picker/ColorPicker.vue';
 
+import CrossMultiplier from '@/tools/math/cross-multiplier/CrossMultiplier.vue';
 import LinearEquationSolver from '@/tools/math/linear-equation-solver/LinearEquationSolver.vue';
 import Ratiomatic from '@/tools/math/ratiomatic/Ratiomatic.vue';
 
@@ -52,6 +53,11 @@ const routes: Array<RouteConfig> = [
   },
 
   // Math
+  {
+    path: '/cross-multiplier',
+    name: 'cross-multiplier',
+    component: CrossMultiplier
+  },
   {
     path: '/linear-equations',
     name: 'linear-equations',

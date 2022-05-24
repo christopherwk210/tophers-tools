@@ -54,6 +54,12 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Two points go in, slope and y-intercept come out.',
       route: '/linear-equations',
       about: githubURL + 'math/linear-equation-solver'
+    },
+    {
+      title: 'Cross Multiplier',
+      description: 'Solve for unknown in a fraction pair.',
+      route: '/cross-multiplier',
+      about: githubURL + 'math/cross-multiplier'
     }
   ]
 }
