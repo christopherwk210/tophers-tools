@@ -1,8 +1,9 @@
 export interface ToolConfig {
   title: string;
   description: string;
-  route: string;
-  about: string;
+  url?: string;
+  route?: string;
+  about?: string;
 }
 
 const githubURL = 'https://github.com/christopherwk210/tophers-tools/tree/master/src/tools/';
@@ -60,6 +61,23 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Solve for unknown in a fraction pair.',
       route: '/cross-multiplier',
       about: githubURL + 'math/cross-multiplier'
+    }
+  ],
+  Forager: [
+    {
+      title: 'Cosmetic Factory',
+      description: 'Ccreate your own cosmetic mods for Forager.',
+      url: 'https://topheranselmo.com/fcf'
+    },
+    {
+      title: 'Modding Documentation',
+      description: `The home of Forager's Modding API Documnetation.`,
+      url: 'https://topheranselmo.com/forager-modding-docs'
+    },
+    {
+      title: 'Secret Settings Generator',
+      description: 'Quickly and easily generate a Forager secret settings file.',
+      url: 'https://topheranselmo.com/fssg/'
     }
   ]
 }

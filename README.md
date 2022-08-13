@@ -11,6 +11,12 @@ An organized collection of various useful online tools, made with Vue.
 - [Lottie Looper](./src/tools/animation/lottie-looper) - Tool for determining frame perfect positions for custom lottie loops.
 - [Smooth Approach](./src/tools/animation/smooth-approach) - Handy reference utility for a handy easing script.
 
+### Forager
+
+- [Cosmetic Factory](https://topheranselmo.com/fcf) - Ccreate your own cosmetic mods for Forager.
+- [Modding Documentation](https://topheranselmo.com/forager-modding-docs) - The home of Forager's Modding API Documnetation.
+- [Secret Settings Generator](https://topheranselmo.com/fssg/) - Quickly and easily generate a Forager secret settings file.
+
 ### GameMaker
 
 - [Color Picker](./src/tools/gamemaker/color-picker) - The easy way to get GML color codes.

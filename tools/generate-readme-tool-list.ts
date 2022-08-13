@@ -17,7 +17,11 @@ for (const entry of organizedTools) {
   if (typeof entry === 'string') {
     output += `\n### ${entry}\n\n`;
   } else {
-    output += `- [${entry.title}](./src${entry.about.split('/src')[1]}) - ${entry.description}\n`
+    if (entry.about) {
+      output += `- [${entry.title}](./src${entry.about.split('/src')[1]}) - ${entry.description}\n`;
+    } else if (entry.url) {
+      output += `- [${entry.title}](${entry.url}) - ${entry.description}\n`;
+    }
   }
 }
 
