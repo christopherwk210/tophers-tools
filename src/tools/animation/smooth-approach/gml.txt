@@ -3,4 +3,3 @@ function smooth_approach(current_value, target_value, spd, threshold = 0.0005) {
     if (abs(difference) < threshold) return target_value;
     return current_value + sign(difference) * abs(difference) * spd;
 }
-

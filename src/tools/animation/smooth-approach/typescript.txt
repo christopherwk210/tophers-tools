@@ -3,4 +3,3 @@ function smoothApproach(currentValue: number, targetValue: number, speed: number
   if (Math.abs(difference) < threshold) return targetValue;
   return currentValue + Math.sign(difference) * Math.abs(difference) * speed;
 }
-

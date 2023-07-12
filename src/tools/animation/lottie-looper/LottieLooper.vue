@@ -1,20 +1,131 @@
-<style scoped>
-  .lottie-container {
-    height: 300px;
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { useTool } from '@/tools/use-tool';
+import lottie, { type AnimationItem } from 'lottie-web';
+
+import ToolWindow from '@/components/ToolWindow.vue';
+import DropZone from '@/components/DropZone.vue';
+
+const { title, about } = useTool();
+
+const currentLottie = ref(false);
+const animation = ref<AnimationItem>();
+const isPaused = ref(false);
+
+const totalFrames = ref(0);
+const currentFrame = ref(0);
+
+const loopStart = ref(0);
+const loopEnd = ref(0);
+
+const animationFrame = ref(0);
+
+const lottieContainer = ref<HTMLDivElement>();
+
+onMounted(() => tick());
+onBeforeUnmount(() => cancelAnimationFrame(animationFrame.value));
+
+watch(() => loopStart.value, () => {
+  if (!animation.value) return;
+
+  animation.value.pause();
+  isPaused.value = true;
+
+  animation.value.goToAndStop(parseInt(loopStart.value as any), true);
+});
+
+watch(() => loopEnd.value, () => {
+  if (!animation.value) return;
+
+  animation.value.pause();
+  isPaused.value = true;
+
+  animation.value.goToAndStop(parseInt(loopEnd.value as any), true);
+});
+
+function tick() {
+  if (animation.value) {
+    if (animation.value.currentFrame >= loopEnd.value) {
+      playFromLoopPoint();
+    }
+
+    currentFrame.value = animation.value.currentFrame;
   }
 
-  .form-range.pe-none {
-    filter: invert(1) hue-rotate(180deg);
-  }
+  animationFrame.value = requestAnimationFrame(tick);
+}
 
-  .range-start {
-    filter: hue-rotate(280deg);
-  }
+function playFromLoopPoint() {
+  if (!animation.value) return;
 
-  .range-end {
-    filter: hue-rotate(150deg);
+  animation.value.goToAndPlay(loopStart.value, true);
+  isPaused.value = false;
+}
+
+async function handleDrop(item: DataTransferItem) {
+  if (item.kind === 'file' && item.type === 'application/json') {
+    const file = item.getAsFile();
+    
+    if (file) {
+      const text = await file.text();
+      try {
+        currentLottie.value = JSON.parse(text);
+        await nextTick() // Wait for DOM to insert lottie container
+        loadLottie();
+      } catch (e) {}
+    }
   }
-</style>
+}
+
+function reset() {
+  animation.value = undefined;
+  currentLottie.value = false;
+  isPaused.value = false;
+
+  totalFrames.value = 0;
+  currentFrame.value = 0;
+
+  loopStart.value = 0;
+  loopEnd.value = 0;
+}
+
+function togglePlayback() {
+  if (!animation.value) return;
+
+  if (animation.value.isPaused) {
+    animation.value.play();
+    isPaused.value = false;
+  } else {
+    animation.value.pause();
+    isPaused.value = true;
+  }
+}
+
+async function loadLottie() {
+  if (!lottieContainer.value) return;
+
+  animation.value = lottie.loadAnimation({
+    container: lottieContainer.value,
+    loop: false,
+    autoplay: false,
+    animationData: currentLottie.value
+  });
+
+  totalFrames.value = animation.value.totalFrames - 1;
+  loopStart.value = 0;
+  loopEnd.value = totalFrames.value;
+  isPaused.value = false;
+
+  await nextTick();
+  animation.value.goToAndPlay(0);
+
+  animation.value.addEventListener('complete', () => {
+    if (animation.value) animation.value.goToAndPlay(loopStart.value, true);
+  });
+}
+
+const currentFrameRounded = computed(() => Math.round(currentFrame.value));
+</script>
 
 <template>
   <ToolWindow :title="title" :aboutLink="about" backRoute="/">
@@ -40,143 +151,20 @@
   </ToolWindow>
 </template>
 
-<script lang="ts">
-import { Component, Ref, Watch } from 'vue-property-decorator';
-import ToolSuper from '@/tools/ToolSuper';
-import ToolWindow from '@/components/ToolWindow.vue';
-import DropZone from '@/components/DropZone.vue';
-
-import lottie, { AnimationItem } from 'lottie-web';
-
-@Component({
-  components: {
-    ToolWindow,
-    DropZone
-  }
-})
-export default class LottieLooper extends ToolSuper {
-  currentLottie: any = false;
-  animation!: AnimationItem;
-  isPaused = false;
-
-  totalFrames = 0;
-  currentFrame = 0;
-
-  loopStart = 0;
-  loopEnd = 0;
-
-  animationFrame!: number;
-
-  @Ref() lottieContainer!: HTMLDivElement;
-
-  mounted() {
-    this.tick();
+<style scoped>
+  .lottie-container {
+    height: 300px;
   }
 
-  beforeDestroy() {
-    cancelAnimationFrame(this.animationFrame);
+  .form-range.pe-none {
+    filter: invert(1) hue-rotate(180deg);
   }
 
-  @Watch('loopStart')
-  handleLoopStartChanged() {
-    if (this.animation) {
-      this.animation.pause();
-      this.isPaused = true;
-  
-      this.animation.goToAndStop(parseInt(this.loopStart as any), true);
-    }
+  .range-start {
+    filter: hue-rotate(280deg);
   }
 
-  @Watch('loopEnd')
-  handleLoopEndChanged() {
-    if (this.animation) {
-      this.animation.pause();
-      this.isPaused = true;
-  
-      this.animation.goToAndStop(parseInt(this.loopEnd as any) - 0.1, true);
-    }
+  .range-end {
+    filter: hue-rotate(150deg);
   }
-
-  tick() {
-    if (this.animation) {
-      if (this.animation.currentFrame >= this.loopEnd) {
-        this.playFromLoopPoint();
-      }
-      this.currentFrame = this.animation.currentFrame;
-    }
-
-    this.animationFrame = requestAnimationFrame(this.tick.bind(this));
-  }
-
-  playFromLoopPoint() {
-    if (this.animation) {
-      this.animation.goToAndPlay(this.loopStart, true);
-      this.isPaused = false;
-    }
-  }
-
-  async handleDrop(item: DataTransferItem) {
-    if (item.kind === 'file' && item.type === 'application/json') {
-      const file = item.getAsFile();
-      
-      if (file) {
-        const text = await file.text();
-        try {
-          this.currentLottie = JSON.parse(text);
-          await this.$nextTick(); // Wait for DOM to insert lottie container
-          this.loadLottie();
-        } catch (e) {}
-      }
-    }
-  }
-
-  reset() {
-    this.animation = undefined as any;
-    this.currentLottie = false;
-    this.isPaused = false;
-
-    this.totalFrames = 0;
-    this.currentFrame = 0;
-
-    this.loopStart = 0;
-    this.loopEnd = 0;
-  }
-
-  togglePlayback() {
-    if (this.animation) {
-      if (this.animation.isPaused) {
-        this.animation.play();
-        this.isPaused = false;
-      } else {
-        this.animation.pause();
-        this.isPaused = true;
-      }
-    }
-  }
-
-  async loadLottie() {
-    this.animation = lottie.loadAnimation({
-      container: this.lottieContainer,
-      loop: false,
-      autoplay: false,
-      animationData: this.currentLottie
-    });
-
-    this.totalFrames = this.animation.totalFrames - 1;
-    this.loopStart = 0;
-    this.loopEnd = this.totalFrames;
-    this.isPaused = false;
-
-    await this.$nextTick();
-    this.animation.goToAndPlay(0);
-
-    this.animation.addEventListener('complete', () => {
-      this.animation.goToAndPlay(this.loopStart, true);
-    })
-  }
-
-  get currentFrameRounded() {
-    return Math.round(this.currentFrame);
-  }
-}
-</script>
+</style>

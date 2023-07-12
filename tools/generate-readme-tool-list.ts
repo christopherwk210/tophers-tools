@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { tools } from '../src/lib/config';
+import { tools } from '../src/config';
 
-const organizedTools = [];
+const organizedTools: any[] = [];
 for (const key of Object.keys(tools).sort()) {
   organizedTools.push(key);
 

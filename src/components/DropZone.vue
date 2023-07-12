@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+
+const props = defineProps<{ text: string; }>();
+const emit = defineEmits<{ drop: [item: DataTransferItem] }>();
+
+const dragInside = ref(false);
+
+function handleDragOver(event: DragEvent) {
+  event.preventDefault();
+}
+
+function handleDragEnter(event: DragEvent) {
+  event.preventDefault();
+  dragInside.value = true;
+}
+
+function handleDragLeave(event: DragEvent) {
+  event.preventDefault();
+  dragInside.value = false;
+}
+
+async function handleDrop(event: DragEvent) {
+  event.preventDefault();
+  dragInside.value = false;
+
+  if (event.dataTransfer && event.dataTransfer.items.length > 0) {
+    emit('drop', event.dataTransfer.items[0]);
+  }
+}
+
+const dropZoneClasses = computed(() => ({
+  'bg-primary': dragInside.value,
+  'bg-dark': !dragInside.value
+}));
+</script>
+
 <template>
   <div
     class="card text-white"
@@ -8,49 +45,7 @@
     @drop="handleDrop"
   >
     <div class="card-body text-center p-5 user-select-none" style="pointer-events: none">
-      {{text}}
+      {{ props.text }}
     </div>
   </div>
 </template>
-
-
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-
-@Component
-export default class DropZone extends Vue {
-  @Prop() text!: string;
-
-  dragInside = false;
-
-  handleDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-  
-  handleDragEnter(event: DragEvent) {
-    event.preventDefault();
-    this.dragInside = true;
-  }
-
-  handleDragLeave(event: DragEvent) {
-    event.preventDefault();
-    this.dragInside = false;
-  }
-
-  async handleDrop(event: DragEvent) {
-    event.preventDefault();
-    this.dragInside = false;
-
-    if (event.dataTransfer && event.dataTransfer.items.length > 0) {
-      this.$emit('drop', event.dataTransfer.items[0]);
-    }
-  }
-
-  get dropZoneClasses() {
-    return {
-      'bg-dark': !this.dragInside,
-      'bg-primary': this.dragInside
-    };
-  }
-}
-</script>

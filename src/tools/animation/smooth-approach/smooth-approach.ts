@@ -1,6 +1,6 @@
-import javascript from './javascript.txt';
-import typescript from './typescript.txt';
-import gml from './gml.txt';
+import javascript from './javascript.txt?raw';
+import typescript from './typescript.txt?raw';
+import gml from './gml.txt?raw';
 
 export function smoothApproach(currentValue: number, targetValue: number, speed: number, threshold = 0.0005) {
 	const difference = targetValue - currentValue;
