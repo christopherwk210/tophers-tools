@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useTool } from '@/tools/use-tool';
-import { IroColorPicker } from '@jaames/iro/dist/ColorPicker';
+import type { IroColorPicker } from '@jaames/iro/dist/ColorPicker';
 import ToolWindow from '@/components/ToolWindow.vue';
 import iro from '@jaames/iro';
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import { useTool } from '@/tools/use-tool';
 import { scanDirectory, fileEntryToFile, getFileTypeLines } from './filesystem-utils';
 import { getPieConfig, getBarConfig } from './chart-config';
@@ -7,6 +7,9 @@ import json5 from 'json5';
 import Chart from 'chart.js/auto';
 import ToolWindow from '@/components/ToolWindow.vue';
 import DropZone from '@/components/DropZone.vue';
+
+// @ts-ignore
+import html2canvas from '@/assets/scripts/html2canvas.esm.js';
 
 enum State {
   WAITING_FOR_PROJECT,
@@ -50,13 +53,6 @@ const totalAssets = ref(0);
 // Stores total asset counts from scan
 const assetCounts = ref<{ [x: string]: { type: string, count: number; } }>({});
 
-const html2canvas = ref<any>();
-
-onMounted(async () => {
-  // @ts-ignore
-  html2canvas.value = await import('@/assets/scripts/html2canvas.esm');
-});
-
 function reset() {
   totalAssets.value = 0;
   totalLinesOfGMLCode.value = 0;
@@ -76,12 +72,12 @@ async function generateReport() {
 
   const replacementHeaderMatter = document.createElement('div');
   replacementHeaderMatter.className = 'ms-auto text-white';
-  replacementHeaderMatter.innerHTML = 'https://chrisanselmo.com/tools/#/project-analyzer';
+  replacementHeaderMatter.innerHTML = 'https://topheranselmo.com/tools/project-analyzer';
   replacementHeaderMatter.style.opacity = '0.4';
   document.querySelector('.card-header')!.appendChild(replacementHeaderMatter);
 
   const cardElement = document.querySelector('.card');
-  const canvas: HTMLCanvasElement = await html2canvas.value(cardElement, { backgroundColor: '#2F2E34' });
+  const canvas: HTMLCanvasElement = await html2canvas(cardElement, { backgroundColor: '#2F2E34' });
   const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
   const link = document.createElement('a');
   link.download = `${projectTitle.value}.png`;
@@ -183,7 +179,8 @@ async function handleYYP(map: any) {
 
 watch(() => chartModeIsBar.value, () => setupChart(chart.value));
 
-function setupChart(existingChart?: Chart<any, number[], string>) {
+async function setupChart(existingChart?: Chart<any, number[], string>) {
+  await nextTick();
   if (!chartCanvas.value) return;
   if (existingChart) existingChart.destroy();
 
@@ -193,7 +190,7 @@ function setupChart(existingChart?: Chart<any, number[], string>) {
     labels.push(assetCount.type);
     dataCounts.push(assetCount.count);
   }
-
+  
   const config = chartModeIsBar.value ? getBarConfig(labels, dataCounts) : getPieConfig(labels, dataCounts);
   chart.value = new Chart(chartCanvas.value, config);
 }
@@ -202,11 +199,11 @@ function setupChart(existingChart?: Chart<any, number[], string>) {
 <template>
   <ToolWindow :title="title" :aboutLink="about" backRoute="/">
     <div class="p-4" v-if="state === 0">
-      <p class="text-muted user-select-none">Note: This is an experimental tool that may not work on all browsers.</p>
+      <p class="text-white-50 user-select-none">Note: This is an experimental tool that may not work on all browsers.</p>
       <DropZone @drop="handleDrop" text="Drop a folder containing a .yyp file here!" />
     </div>
 
-    <div class="p-4 text-muted text-center user-select-none" style="cursor: progress" v-if="state === 1">
+    <div class="p-4 text-white-50 text-center user-select-none" style="cursor: progress" v-if="state === 1">
       Scanning project, please wait...
     </div>
 
@@ -214,7 +211,7 @@ function setupChart(existingChart?: Chart<any, number[], string>) {
       <h3 class="border-bottom">{{projectTitle}}</h3>
 
       <h4 class="mt-4">Stats</h4>
-      <ul class="text-muted">
+      <ul class="text-white-50">
         <li>Total assets: <span class="text-primary">{{totalAssets}}</span></li>
         <li>Total lines of GML code: <span class="text-primary">{{totalLinesOfGMLCode}}</span></li>
         <li>Total lines of shader code: <span class="text-primary">{{totalLinesOfShaderCode}}</span></li>
@@ -226,12 +223,14 @@ function setupChart(existingChart?: Chart<any, number[], string>) {
         Asset Distribution
 
         <div class="form-check form-switch d-inline-block ms-auto fs-6">
-          <input v-model="chartModeIsBar" class="form-check-input" type="checkbox" role="switch" id="chart-type">
-          <label style="transform: translateY(2px)" class="form-check-label" for="chart-type">{{chartModeIsBar ? 'Bar chart' : 'Pie chart'}}</label>
+          <label style="transform: translateY(2px)" class="form-check-label" for="chart-type">
+            <input v-model="chartModeIsBar" class="form-check-input" type="checkbox" role="switch" id="chart-type">
+            {{ chartModeIsBar ? 'Bar chart' : 'Pie chart' }}
+          </label>
         </div>
       </h4>
       <div class="canvas-container">
-        <canvas ref="chartCanvas"></canvas>
+        <canvas :key="+chartModeIsBar" ref="chartCanvas"></canvas>
       </div>
       
       <div id="analyzer-buttons" class="d-flex justify-content-center mt-5">

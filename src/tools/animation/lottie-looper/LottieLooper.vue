@@ -139,9 +139,9 @@ const currentFrameRounded = computed(() => Math.round(currentFrame.value));
       <input type="range" class="form-range pe-none" min="0" :max="totalFrames" step="1" :value="currentFrame">
       <input type="range" @pointerup="playFromLoopPoint" class="range-end form-range" min="0" :max="totalFrames" step="1" v-model="loopEnd">
 
-      <p class="text-center text-light"><span class="text-muted user-select-none">Loop start frame:</span> {{loopStart}}</p>
-      <p class="text-center text-light"><span class="text-muted user-select-none">Current frame:</span> {{currentFrameRounded}}</p>
-      <p class="text-center text-light"><span class="text-muted user-select-none">Loop end frame:</span> {{loopEnd}}</p>
+      <p class="text-center text-light"><span class="text-white-50 user-select-none">Loop start frame:</span> {{loopStart}}</p>
+      <p class="text-center text-light"><span class="text-white-50 user-select-none">Current frame:</span> {{currentFrameRounded}}</p>
+      <p class="text-center text-light"><span class="text-white-50 user-select-none">Loop end frame:</span> {{loopEnd}}</p>
 
       <div class="d-flex justify-content-center">
         <button @click="togglePlayback" class="btn btn-primary mx-3">{{isPaused ? 'Play' : 'Pause'}}</button>

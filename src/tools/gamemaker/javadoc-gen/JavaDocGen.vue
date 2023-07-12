@@ -81,4 +81,8 @@ function updateOutput(func: string, useArgs: boolean) {
   .text-pink {
     color: #e83e8c;
   }
+
+  ::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+  }
 </style>

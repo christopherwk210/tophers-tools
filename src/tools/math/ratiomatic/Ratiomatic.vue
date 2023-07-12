@@ -95,7 +95,7 @@ function checkInputsValid() {
         Your browser doesn't support this tool!
       </template>
 
-      <template v-if="supportsWebWorkers">
+      <template v-else>
         <div class="d-flex text-light mb-3">
           <input
             type="text"
@@ -121,9 +121,9 @@ function checkInputsValid() {
         </div>
 
         <div class="d-flex text-light mb-3" v-if="inputsLocked && !loading">
-          <input @input="handleNumeratorChange" :value="subNumerator" type="text" class="form-control text-light border-light text-center bg-dark" v-focus-select>
+          <input @input="handleNumeratorChange" v-model="subNumerator" type="text" class="form-control text-light border-light text-center bg-dark" v-focus-select>
           <span class="d-flex align-items-center ms-3 me-3">/</span>
-          <input @input="handleDenominatorChange" :value="subDenominator" type="text" class="form-control text-light border-light text-center bg-dark" v-focus-select>
+          <input @input="handleDenominatorChange" v-model="subDenominator" type="text" class="form-control text-light border-light text-center bg-dark" v-focus-select>
         </div>
 
         <div class="list-group" v-if="inputsLocked && !loading">

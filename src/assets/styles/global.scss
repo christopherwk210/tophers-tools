@@ -9,6 +9,12 @@ html, body {
   font-family: 'Cascadia Mono', Courier, monospace;
 }
 
+.app, #app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 a.bg-secondary:focus, a.bg-secondary:hover, button.bg-secondary:focus, button.bg-secondary:hover {
   background-color: #171619 !important;
 }
@@ -64,4 +70,8 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
       height: 100%;
     }
   }
+}
+
+.list-group-item {
+  border: none;
 }
