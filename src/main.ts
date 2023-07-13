@@ -1,5 +1,7 @@
 import 'nprogress/nprogress.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/styles/global.scss';
+import 'weq8/ui';
 
 import { createApp } from 'vue';
 import App from './App.vue';

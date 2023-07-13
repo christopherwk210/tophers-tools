@@ -41,6 +41,11 @@ const router = createRouter({
       name: 'color-picker',
       component: () => import('@/tools/gamemaker/color-picker/ColorPicker.vue')
     },
+    {
+      path: '/eq-generator',
+      name: 'eq-generator',
+      component: () => import('@/tools/gamemaker/eq-generator/EQ.vue')
+    },
 
     // Math
     {

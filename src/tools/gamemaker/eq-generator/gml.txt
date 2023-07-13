@@ -1,0 +1,64 @@
+// EQ code auto-generated from https://topheranselmo.com/tools/eq-generator
+var eq_struct = {
+	type: AudioEffectType.EQ,
+	bypass: false,
+	locut: {
+		type: AudioEffectType.HPF2,
+		bypass: false,
+		cutoff: LOCUT_CUTOFF,
+		q: LOCUT_Q
+	},
+	loshelf: {
+		type: AudioEffectType.LoShelf,
+		bypass: false,
+		freq: LOSHELF_FREQ,
+		q: LOSHELF_Q,
+		gain: db_to_lin(LOSHELF_GAIN)
+	},
+	eq1: {
+		type: AudioEffectType.PeakEQ,
+		bypass: false,
+		freq: EQ1_FREQ,
+		q: EQ1_Q,
+		gain: db_to_lin(EQ1_GAIN)
+	},
+	eq2: {
+		type: AudioEffectType.PeakEQ,
+		bypass: false,
+		freq: EQ2_FREQ,
+		q: EQ2_Q,
+		gain: db_to_lin(EQ2_GAIN)
+	},
+	eq3: {
+		type: AudioEffectType.PeakEQ,
+		bypass: false,
+		freq: EQ3_FREQ,
+		q: EQ3_Q,
+		gain: db_to_lin(EQ3_GAIN)
+	},
+	eq4: {
+		type: AudioEffectType.PeakEQ,
+		bypass: false,
+		freq: EQ4_FREQ,
+		q: EQ4_Q,
+		gain: db_to_lin(EQ4_GAIN)
+	},
+	hishelf: {
+		type: AudioEffectType.HiShelf,
+		bypass: false,
+		freq: HISHELF_FREQ,
+		q: HISHELF_Q,
+		gain: db_to_lin(HISHELF_GAIN)
+	},
+	hicut: {
+		type: AudioEffectType.LPF2,
+		bypass: false,
+		cutoff: HICUT_CUTOFF,
+		q: HICUT_Q
+	}
+};
+
+var eq_effect = audio_effect_create(AudioEffectType.EQ, eq_struct);
+
+// You can apply your EQ to the whole game with this line:
+// audio_bus_main.effects[0] = eq_effect;

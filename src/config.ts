@@ -41,6 +41,12 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Turns GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.',
       route: '/gml-javadoc-gen',
       about: githubURL + 'gamemaker/javadoc-gen'
+    },
+    {
+      title: 'EQ Generator',
+      description: 'Generate GML code for parametric equalizer effects.',
+      route: '/eq-generator',
+      about: githubURL + 'gamemaker/eq-generator'
     }
   ],
   Math: [

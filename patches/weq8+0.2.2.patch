@@ -1,0 +1,12 @@
+diff --git a/node_modules/weq8/dist/ui.js b/node_modules/weq8/dist/ui.js
+index aa72412..f4f364a 100644
+--- a/node_modules/weq8/dist/ui.js
++++ b/node_modules/weq8/dist/ui.js
+@@ -328,6 +328,7 @@ let g = (v = class extends C {
+         border-radius: 10px;
+         background: #373737;
+         transition: background-color 0.15s ease;
++        pointer-events: none;
+       }
+       :host(.selected) .chip .filterNumber {
+         background: #ffcc00;
