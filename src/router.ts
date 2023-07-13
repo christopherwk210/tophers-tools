@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ToolList from '@/views/ToolList.vue';
 
+// @ts-ignore
+import NProgress from 'nprogress';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -58,6 +61,17 @@ const router = createRouter({
 
     { path: '/:pathMatch(.*)*', name: 'not-found', component: ToolList },
   ]
-})
+});
 
-export default router
+NProgress.configure({ showSpinner: false });
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
+});
+
+export default router;

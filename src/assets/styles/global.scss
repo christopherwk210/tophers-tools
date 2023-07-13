@@ -75,3 +75,20 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 .list-group-item {
   border: none;
 }
+
+
+.bar {
+  top: 56px !important;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    top: 0 !important;
+  }
+}
+
+nav {
+  z-index: 99999;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    z-index: 0 !important;
+  }
+}

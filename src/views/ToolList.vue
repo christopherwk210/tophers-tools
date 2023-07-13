@@ -30,7 +30,7 @@ onMounted(() => {
             <p class="m-0" style="opacity: 0.4">{{entry.description}}</p>
           </RouterLink>
   
-          <a v-if="entry.url" :href="entry.url" class="list-group-item list-group-item-action bg-secondary text-light user-select-none">
+          <a v-if="entry.url" target="_blank" :href="entry.url" class="list-group-item list-group-item-action bg-secondary text-light user-select-none">
             <h5 class="mb-1">{{entry.title}}</h5>
             <p class="m-0" style="opacity: 0.4">{{entry.description}}</p>
           </a>
