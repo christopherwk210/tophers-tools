@@ -1,17 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import ToolList from '@/views/ToolList.vue';
-
-import SmoothApproach from '@/tools/animation/smooth-approach/SmoothApproach.vue';
-import LottieLooper from '@/tools/animation/lottie-looper/LottieLooper.vue';
-
-import ProjectAnalyzer from '@/tools/gamemaker/project-analyzer/ProjectAnalyzer.vue';
-import JavaDocGen from '@/tools/gamemaker/javadoc-gen/JavaDocGen.vue';
-import ColorPicker from '@/tools/gamemaker/color-picker/ColorPicker.vue';
-
-import CrossMultiplier from '@/tools/math/cross-multiplier/CrossMultiplier.vue';
-import LinearEquationSolver from '@/tools/math/linear-equation-solver/LinearEquationSolver.vue';
-import Ratiomatic from '@/tools/math/ratiomatic/Ratiomatic.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
