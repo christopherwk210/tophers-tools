@@ -1,4 +1,4 @@
-# [Linear Equation Solver](https://topheranselmo.com/tools/#/linear-equations)
+# [Linear Equation Solver](https://topheranselmo.com/tools/linear-equations)
 
 `y = mx + b`
 
