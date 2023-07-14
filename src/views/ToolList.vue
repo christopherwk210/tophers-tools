@@ -31,8 +31,13 @@ onMounted(() => {
           </RouterLink>
   
           <a v-if="entry.url" target="_blank" :href="entry.url" class="list-group-item list-group-item-action bg-secondary text-light user-select-none">
-            <h5 class="mb-1">{{entry.title}}</h5>
-            <p class="m-0" style="opacity: 0.4">{{entry.description}}</p>
+            <h5 class="mb-1 d-flex align-items-center">
+              {{entry.title}}
+              <i style="font-size: 1rem; opacity: 0.4" class="ms-2 bi-box-arrow-up-right"></i>
+            </h5>
+            <p class="m-0" style="opacity: 0.4">
+              {{entry.description}}
+            </p>
           </a>
         </template>
       </template>
