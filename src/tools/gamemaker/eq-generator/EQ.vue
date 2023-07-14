@@ -86,7 +86,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  audioSourceNode.value?.stop();
+  if (audioPlaying.value) pause();
   audioSourceNode.value?.disconnect();
   audioContext.value?.close();
 
