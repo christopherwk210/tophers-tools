@@ -33,3 +33,7 @@ An organized collection of various useful online tools, made with Vue.
 ### Misc
 
 - [Phantasy Star Dungeon Mapper](https://topheranselmo.com/psdm/) - A tool for mapping out Phantasy Star dungeons as you play.
+
+### Web
+
+- [CSS Color Overlay](./src/tools/web/color-overlay) - Generates CSS filters that emulate pixel perfect color overlays.

@@ -71,6 +71,13 @@ const router = createRouter({
       component: () => import('@/tools/misc/visual-json/VisualJSON.vue')
     },
 
+    // Web
+    {
+      path: '/color-overlay',
+      name: 'color-overlay',
+      component: () => import('@/tools/web/color-overlay/ColorOverlay.vue')
+    },
+
     { path: '/:pathMatch(.*)*', name: 'not-found', component: ToolList },
   ]
 });

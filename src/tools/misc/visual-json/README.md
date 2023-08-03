@@ -1,1 +1,1 @@
-# [VisualJSON](https://topheranselmo.com/misc/visual-json)
+# [VisualJSON](https://topheranselmo.com/tools/visual-json)

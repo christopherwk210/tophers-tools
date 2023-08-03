@@ -98,5 +98,13 @@ export const tools: { [category: string]: ToolConfig[] } = {
     //   route: '/visual-json',
     //   about: githubURL + 'misc/visual-json'
     // }
+  ],
+  Web: [
+    {
+      title: 'CSS Color Overlay',
+      description: 'Generates CSS filters that emulate pixel perfect color overlays.',
+      route: '/color-overlay',
+      about: githubURL + 'web/color-overlay'
+    }
   ]
 }
