@@ -64,6 +64,13 @@ const router = createRouter({
       component: () => import('@/tools/math/ratiomatic/Ratiomatic.vue')
     },
 
+    // Misc
+    {
+      path: '/visual-json',
+      name: 'visual-json',
+      component: () => import('@/tools/misc/visual-json/VisualJSON.vue')
+    },
+
     { path: '/:pathMatch(.*)*', name: 'not-found', component: ToolList },
   ]
 });

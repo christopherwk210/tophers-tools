@@ -85,5 +85,18 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Quickly and easily generate a Forager secret settings file.',
       url: 'https://topheranselmo.com/fssg/'
     }
+  ],
+  Misc: [
+    {
+      title: 'Phantasy Star Dungeon Mapper',
+      description: 'A tool for mapping out Phantasy Star dungeons as you play.',
+      url: 'https://topheranselmo.com/psdm/'
+    },
+    // {
+    //   title: 'VisualJSON',
+    //   description: 'Manage JSON structures with a visual interface.',
+    //   route: '/visual-json',
+    //   about: githubURL + 'misc/visual-json'
+    // }
   ]
 }

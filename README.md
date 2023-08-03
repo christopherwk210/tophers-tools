@@ -29,3 +29,7 @@ An organized collection of various useful online tools, made with Vue.
 - [Cross Multiplier](./src/tools/math/cross-multiplier) - Solve for unknown in a fraction pair.
 - [Linear Equation Solver](./src/tools/math/linear-equation-solver) - Two points go in, slope and y-intercept come out.
 - [Ratiomatic](./src/tools/math/ratiomatic) - Automatically calculate ratios. Handy for working with resolutions.
+
+### Misc
+
+- [Phantasy Star Dungeon Mapper](https://topheranselmo.com/psdm/) - A tool for mapping out Phantasy Star dungeons as you play.

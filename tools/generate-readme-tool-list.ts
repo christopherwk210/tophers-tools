@@ -27,4 +27,4 @@ for (const entry of organizedTools) {
 
 const readmePath = path.join(__dirname, '../README.md');
 const existingReadme = fs.readFileSync(readmePath, 'utf8');
-fs.writeFileSync(readmePath, existingReadme.split('## Tools')[0] + output, { encoding: 'utf8', mode: fs.constants.W_OK });
+fs.writeFileSync(readmePath + 'd', existingReadme.split('## Tools')[0] + output, { encoding: 'utf8', mode: fs.constants.W_OK });
