@@ -96,23 +96,40 @@ const userText = ref('Hello world!');
 const useBold = ref(false);
 const useUnderline = ref(false);
 const colorModePerWord = ref(false);
+const colorRep = ref(1);
 
 const currentPattern = computed(() => patterns[colorPattern.value]);
 
 const previewHTML = computed(() => {
+  let colorIndex = 0;
+  let repCounter = 0;
+
   if (colorModePerWord.value) {
-    return userText.value.split(' ').map((word, index) => {
-      const color = currentPattern.value.pattern[index % currentPattern.value.pattern.length];
+    return userText.value.split(' ').map(word => {
+      const color = currentPattern.value.pattern[colorIndex % currentPattern.value.pattern.length];
       const hex = colors.find(c => c.name === color)!.hex;
+
+      if (colorRep.value > 1) {
+        if (repCounter++ % colorRep.value === colorRep.value - 1) colorIndex++;
+      } else {
+        colorIndex++;
+      }
+
       return `<span style="color: ${hex}">${word}</span>`;
     }).join(' ');
   } else {
-    let colorIndex = 0;
-
-    return userText.value.split('').map((char, index) => {
+    return userText.value.split('').map(char => {
       const color = currentPattern.value.pattern[colorIndex % currentPattern.value.pattern.length];
       const hex = colors.find(c => c.name === color)!.hex;
-      if (char !== ' ') colorIndex++;
+
+      if (char !== ' ') {
+        if (colorRep.value > 1) {
+          if (repCounter++ % colorRep.value === colorRep.value - 1) colorIndex++;
+        } else {
+           colorIndex++;
+        }
+      }
+
       return `<span style="color: ${hex}">${char}</span>`;
     }).join('');
   }
@@ -125,18 +142,28 @@ watch([
   () => useBold.value,
   () => useUnderline.value,
   () => colorModePerWord.value,
-  () => colorPattern.value
+  () => colorPattern.value,
+  () => colorRep.value
 ], () => copied.value = false);
 
 async function copy() {
   if (copied.value) return;
+
   try {
     let text = '```ansi\n';
+    let colorIndex = 0;
+    let repCounter = 0;
 
     if (colorModePerWord.value) {
-      userText.value.split(' ').map((word, index) => {
-        const color = currentPattern.value.pattern[index % currentPattern.value.pattern.length];
+      userText.value.split(' ').map(word => {
+        const color = currentPattern.value.pattern[colorIndex % currentPattern.value.pattern.length];
         const ansiCode = colors.find(c => c.name === color)!.ansiCode;
+
+        if (colorRep.value > 1) {
+          if (repCounter++ % colorRep.value === colorRep.value - 1) colorIndex++;
+        } else {
+          colorIndex++;
+        }
 
         if (useBold.value) text += `\x1b[1;${ansiCode}m`;
         if (useUnderline.value) text += `\x1b[4;${ansiCode}m`;
@@ -145,17 +172,20 @@ async function copy() {
         text += `${word}\x1b[0m `;
       });
     } else {
-      let colorIndex = 0;
-
-      userText.value.split('').map((char, index) => {
+      userText.value.split('').map(char => {
         const color = currentPattern.value.pattern[colorIndex % currentPattern.value.pattern.length];
         const ansiCode = colors.find(c => c.name === color)!.ansiCode;
 
-        if (char !== ' ') {colorIndex++;
+        if (char !== ' ') {
+          if (colorRep.value > 1) {
+            if (repCounter++ % colorRep.value === colorRep.value - 1) colorIndex++;
+          } else {
+            colorIndex++;
+          }
 
-        if (useBold.value) text += `\x1b[1;${ansiCode}m`;
-        if (useUnderline.value) text += `\x1b[4;${ansiCode}m`;
-        if (!useBold.value && !useUnderline.value) text += `\x1b[0;${ansiCode}m`;
+          if (useBold.value) text += `\x1b[1;${ansiCode}m`;
+          if (useUnderline.value) text += `\x1b[4;${ansiCode}m`;
+          if (!useBold.value && !useUnderline.value) text += `\x1b[0;${ansiCode}m`;
         }
 
         text += `${char}\x1b[0m`;
@@ -183,7 +213,13 @@ const copyClasses = computed(() => ({
         <option v-for="(pattern, index) of patterns" :value="index">{{ pattern.name }}</option>
       </select>
 
-      <div class="d-flex gap-4 mt-3">
+      <label for="color-rep" class="form-label text-light mt-3 mb-0">
+        Color Repetition
+        <span class="text-white-50">({{ colorRep === 1 ? 'None' : colorRep }})</span>
+      </label>
+      <input v-model.number="colorRep" type="range" min="1" max="10" class="form-range" id="color-rep">
+
+      <div class="d-flex gap-4 mt-2">
         <div class="form-check form-switch d-inline-block fs-6 text-light">
           <label style="transform: translateY(2px)" class="form-check-label" for="use-underline">
             <input v-model="useUnderline" class="form-check-input" type="checkbox" role="switch" id="use-underline">
