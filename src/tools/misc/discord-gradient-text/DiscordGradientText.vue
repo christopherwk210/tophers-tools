@@ -82,6 +82,10 @@ const patterns: { name: string; pattern: string[] }[] = [
   {
     name: 'Dalmatian',
     pattern: ['Gray', 'White']
+  },
+  {
+    name: 'Trans Flag',
+    pattern: ['Blue', 'Pink', 'White', 'Pink']
   }
 ];
 
@@ -230,13 +234,4 @@ const copyClasses = computed(() => ({
     line-height: 1.125rem;
     text-indent: 0;
   }
-
-  .ansi-30 { color: #4f545c; }
-  .ansi-31 { color: #dc322f; }
-  .ansi-32 { color: #859900; }
-  .ansi-33 { color: #b58900; }
-  .ansi-34 { color: #268bd2; }
-  .ansi-35 { color: #d33682; }
-  .ansi-36 { color: #2aa198; }
-  .ansi-37 { color: #ffffff; }
 </style>
