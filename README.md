@@ -32,6 +32,7 @@ An organized collection of various useful online tools, made with Vue.
 
 ### Misc
 
+- [Discord Gradient Text Generator](./src/tools/misc/discord-gradient-text) - Be the envy of all of your friends with fancy colors.
 - [Phantasy Star Dungeon Mapper](https://topheranselmo.com/psdm/) - A tool for mapping out Phantasy Star dungeons as you play.
 
 ### Web
