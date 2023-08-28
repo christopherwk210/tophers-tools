@@ -70,6 +70,11 @@ const router = createRouter({
       name: 'visual-json',
       component: () => import('@/tools/misc/visual-json/VisualJSON.vue')
     },
+    {
+      path: '/discord-gradient-text',
+      name: 'discord-gradient-text',
+      component: () => import('@/tools/misc/discord-gradient-text/DiscordGradientText.vue')
+    },
 
     // Web
     {

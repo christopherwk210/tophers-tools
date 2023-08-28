@@ -92,6 +92,12 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'A tool for mapping out Phantasy Star dungeons as you play.',
       url: 'https://topheranselmo.com/psdm/'
     },
+    {
+      title: 'Discord Gradient Text Generator',
+      description: 'Be the envy of all of your friends with fancy colors.',
+      route: '/discord-gradient-text',
+      about: githubURL + 'misc/discord-gradient-text'
+    }
     // {
     //   title: 'VisualJSON',
     //   description: 'Manage JSON structures with a visual interface.',
