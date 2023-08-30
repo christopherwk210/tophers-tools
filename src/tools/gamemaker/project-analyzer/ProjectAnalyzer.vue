@@ -61,7 +61,7 @@ function reset() {
 }
 
 async function generateReport() {
-  const toolWindowLinks: HTMLDivElement = document.querySelector('.card-header > .ms-auto')!;
+  const toolWindowLinks: HTMLDivElement = document.querySelector('.card-header > .controls')!;
   toolWindowLinks.style.display = 'none';
 
   const chartSwitch: HTMLDivElement = document.querySelector('.form-switch')!;
