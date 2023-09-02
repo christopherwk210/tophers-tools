@@ -72,7 +72,7 @@ export const tools: { [category: string]: ToolConfig[] } = {
   Forager: [
     {
       title: 'Cosmetic Factory',
-      description: 'Ccreate your own cosmetic mods for Forager.',
+      description: 'Create your own cosmetic mods for Forager.',
       url: 'https://topheranselmo.com/fcf'
     },
     {
