@@ -64,12 +64,19 @@ const router = createRouter({
       component: () => import('@/tools/math/ratiomatic/Ratiomatic.vue')
     },
 
+    // Media
+    // {
+    //   path: '/bamboo',
+    //   name: 'bamboo',
+    //   component: () => import('@/tools/media/bamboo/Bamboo.vue')
+    // },
+
     // Misc
-    {
-      path: '/visual-json',
-      name: 'visual-json',
-      component: () => import('@/tools/misc/visual-json/VisualJSON.vue')
-    },
+    // {
+    //   path: '/visual-json',
+    //   name: 'visual-json',
+    //   component: () => import('@/tools/misc/visual-json/VisualJSON.vue')
+    // },
     {
       path: '/discord-gradient-text',
       name: 'discord-gradient-text',

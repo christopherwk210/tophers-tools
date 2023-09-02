@@ -94,7 +94,7 @@ async function handleDrop(item: DataTransferItem) {
   // Get access to the local filesystem
   const fileSystemEntry = item.webkitGetAsEntry();
   if (!fileSystemEntry) return;
-  
+
   // Set scanning state and read directory
   state.value = State.SCANNING;
   const result = await scanDirectory(fileSystemEntry);

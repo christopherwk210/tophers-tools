@@ -86,6 +86,14 @@ export const tools: { [category: string]: ToolConfig[] } = {
       url: 'https://topheranselmo.com/fssg/'
     }
   ],
+  // Media: [
+  //   {
+  //     title: 'Bamboo',
+  //     description: 'Web-based TinyPNG client that replaces images in-place on your filesystem.',
+  //     route: '/bamboo',
+  //     about: githubURL + 'media/bamboo'
+  //   }
+  // ],
   Misc: [
     {
       title: 'Phantasy Star Dungeon Mapper',
