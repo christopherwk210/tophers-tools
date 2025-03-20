@@ -89,6 +89,11 @@ const router = createRouter({
       name: 'color-overlay',
       component: () => import('@/tools/web/color-overlay/ColorOverlay.vue')
     },
+    {
+      path: '/google-fonts-to-single-css',
+      name: 'google-fonts-to-single-css',
+      component: () => import('@/tools/web/google-fonts-to-single-css/GoogleFontsToSingleCSS.vue')
+    },
 
     { path: '/:pathMatch(.*)*', name: 'not-found', component: ToolList },
   ]

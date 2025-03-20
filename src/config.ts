@@ -119,6 +119,12 @@ export const tools: { [category: string]: ToolConfig[] } = {
       description: 'Generates CSS filters that emulate pixel perfect color overlays.',
       route: '/color-overlay',
       about: githubURL + 'web/color-overlay'
+    },
+    {
+      title: 'Google Fonts to Single CSS',
+      description: 'Converts Google Fonts links to a single embedded CSS file.',
+      route: '/google-fonts-to-single-css',
+      about: githubURL + 'web/google-fonts-to-single-css'
     }
   ]
 }
