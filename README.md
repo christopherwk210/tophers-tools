@@ -13,7 +13,7 @@ An organized collection of various useful online tools, made with Vue.
 
 ### Forager
 
-- [Cosmetic Factory](https://topheranselmo.com/fcf) - Ccreate your own cosmetic mods for Forager.
+- [Cosmetic Factory](https://topheranselmo.com/fcf) - Create your own cosmetic mods for Forager.
 - [Modding Documentation](https://topheranselmo.com/forager-modding-docs) - The home of Forager's Modding API Documnetation.
 - [Secret Settings Generator](https://topheranselmo.com/fssg/) - Quickly and easily generate a Forager secret settings file.
 
@@ -38,3 +38,4 @@ An organized collection of various useful online tools, made with Vue.
 ### Web
 
 - [CSS Color Overlay](./src/tools/web/color-overlay) - Generates CSS filters that emulate pixel perfect color overlays.
+- [Google Fonts to Single CSS](./src/tools/web/google-fonts-to-single-css) - Converts Google Fonts links to a single embedded CSS file.
