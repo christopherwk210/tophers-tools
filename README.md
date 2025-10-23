@@ -22,7 +22,7 @@ An organized collection of various useful online tools, made with Vue.
 - [Color Picker](./src/tools/gamemaker/color-picker) - The easy way to get GML color codes.
 - [EQ Generator](./src/tools/gamemaker/eq-generator) - Generate GML code for parametric equalizer effects.
 - [GMS2 Project Analyzer](./src/tools/gamemaker/project-analyzer) - Generate fun statistics about your GMS2 project - no download or upload required!
-- [JavaDoc Gen](./src/tools/gamemaker/javadoc-gen) - Turns GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.
+- [kickstart.gml](https://gist.github.com/christopherwk210/dc9e75dcb94e8b100f567a0b2173d4f1) - A script that every GameMaker project should start with.
 
 ### Math
 

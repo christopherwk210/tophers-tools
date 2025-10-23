@@ -36,17 +36,22 @@ export const tools: { [category: string]: ToolConfig[] } = {
       route: '/color-picker',
       about: githubURL + 'gamemaker/color-picker'
     },
-    {
-      title: 'JavaDoc Gen',
-      description: 'Turns GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.',
-      route: '/gml-javadoc-gen',
-      about: githubURL + 'gamemaker/javadoc-gen'
-    },
+    // {
+    //   title: 'JavaDoc Gen',
+    //   description: 'Turns GameMaker: Studio script comments into GameMaker Studio 2 compatible JavaDoc comments.',
+    //   route: '/gml-javadoc-gen',
+    //   about: githubURL + 'gamemaker/javadoc-gen'
+    // },
     {
       title: 'EQ Generator',
       description: 'Generate GML code for parametric equalizer effects.',
       route: '/eq-generator',
       about: githubURL + 'gamemaker/eq-generator'
+    },
+    {
+      title: 'kickstart.gml',
+      description: 'A script that every GameMaker project should start with.',
+      url: 'https://gist.github.com/christopherwk210/dc9e75dcb94e8b100f567a0b2173d4f1'
     }
   ],
   Math: [
