@@ -101,6 +101,11 @@ export const tools: { [category: string]: ToolConfig[] } = {
   // ],
   Misc: [
     {
+      title: 'Topher\'s Archipelago Web Client',
+      description: 'A nice web client for Archipelago',
+      url: 'https://topheranselmo.com/archipelago/'
+    },
+    {
       title: 'Phantasy Star Dungeon Mapper',
       description: 'A tool for mapping out Phantasy Star dungeons as you play.',
       url: 'https://topheranselmo.com/psdm/'
