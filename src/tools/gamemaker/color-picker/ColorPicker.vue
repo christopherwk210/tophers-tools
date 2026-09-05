@@ -185,6 +185,8 @@ function updateValues() {
 <template>
   <ToolWindow :title="title" :aboutLink="about" backRoute="/">
     <div class="p-4">
+      <div class="color-preview d-block mb-4 ps-1" :style="{ 'background-color': hex }"></div>
+
       <div class="d-block d-md-flex">
         <div ref="picker"></div>
         <div class="d-flex justify-content-between flex-grow-1 text-light">
@@ -258,5 +260,18 @@ function updateValues() {
     align-items: center;
     justify-content: center;
     margin: 0.5rem;
+  }
+
+  .color-preview {
+    height: 80px;
+    position: relative;
+  }
+
+  .color-preview:after {
+    content: 'Preview';
+    color: white;
+    mix-blend-mode: difference;
+    overflow: visible;
+    font-size: 0.9em;
   }
 </style>
